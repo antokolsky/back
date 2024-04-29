@@ -1,0 +1,28 @@
+name: 'antokolsky backend'
+
+services:
+  postgres:
+    container_name: postgres_container
+    image: postgres:latest
+    volumes:
+      -postgres_data:/var/lib/postgresql/data/
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U username -d database", "--quiet"]
+      interval: 30s
+      timeout: 30s
+      retries: 3
+      start_period: 5s
+    env_file:
+      - ./.env
+  
+  backend:
+    container_name: backend_container
+    image: databorodata/antokolsky_backend:latest
+    depends_on:
+      postgres:
+        condition: service_healthy
+    env_file:
+      - ./.env
+  
+  volumes:
+    postgres_data:
