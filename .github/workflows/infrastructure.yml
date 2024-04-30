@@ -38,16 +38,17 @@ jobs:
                 host: ${{ secrets.HOST }}
                 username: ${{ secrets.HOST_USERNAME }}
                 key: ${{ secrets.SSH_KEY }}
-                passphrase: ${{ secrets.PASSPHRASE_SSH }}
+                passphrase: ${{ secrets.PASSPHRASE }}
                 source: "docker-compose.yaml"
                 target: "antokolsky"
+                debug: true
             - name: ssh to remote server
               uses: appleboy/ssh-action@master
               with:
                 host: ${{ secrets.HOST }}
                 username: ${{ secrets.HOST_USERNAME }}
                 key: ${{ secrets.SSH_KEY }}
-                passphrase: ${{ secrets.PASSPHRASE_SSH }}
+                passphrase: ${{ secrets.PASSPHRASE }}
                 script: |
                   cd ~/antokolsky
                   sudo docker compose stop
