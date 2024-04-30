@@ -42,6 +42,16 @@ jobs:
                 source: "docker-compose.yaml"
                 target: "antokolsky"
                 debug: true
+            - name: copy nginx.conf
+              uses: appleboy/scp-action@master
+              with:
+                host: ${{ secrets.HOST }}
+                username: ${{ secrets.HOST_USERNAME }}
+                key: ${{ secrets.SSH_KEY }}
+                passphrase: ${{ secrets.PASSPHRASE }}
+                source: "nginx.conf"
+                target: "antokolsky"
+                debug: true
             - name: ssh to remote server
               uses: appleboy/ssh-action@master
               with:
