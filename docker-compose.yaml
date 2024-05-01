@@ -17,8 +17,7 @@ services:
   
   backend:
     container_name: backend_container
-    # image: databorodata/antokolsky_backend:latest
-    image: test
+    image: databorodata/antokolsky_backend:latest
     depends_on:
       postgres:
         condition: service_healthy
