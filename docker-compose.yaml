@@ -17,7 +17,8 @@ services:
   
   backend:
     container_name: backend_container
-    image: databorodata/antokolsky_backend:latest
+    # image: databorodata/antokolsky_backend:latest
+    image: test
     depends_on:
       postgres:
         condition: service_healthy
@@ -27,7 +28,7 @@ services:
   nginx:
     image: nginx:latest
     ports:
-      - 80:80
+      - 8000:8000
     volumes:
       - ./nginx.conf:/etc/nginx/conf.d/default.conf
     depends_on:
