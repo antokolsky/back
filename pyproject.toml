@@ -16,6 +16,7 @@ psycopg2-binary = "^2.9.9"
 python-decouple = "^3.8"
 djoser = "^2.2.2"
 djangorestframework-simplejwt = "^5.3.1"
+aiohttp = "^3.9.5"
 
 
 [tool.poetry.group.dev.dependencies]
