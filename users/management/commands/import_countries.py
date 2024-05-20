@@ -26,7 +26,8 @@ async def get_countries(params):
                             [
                                 Country(
                                     name_ru=country['name'],
-                                    name_en=country['localizedNames']['en']
+                                    name_en=country['localizedNames']['en'],
+                                    iso=country.get('iso')
                                 ) for country in response['result']
                             ]
                         )
