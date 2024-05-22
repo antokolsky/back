@@ -21,6 +21,12 @@ class Country(models.Model):
         blank=False,
         unique=True
     )
+    iso = models.CharField(
+        'ISO классификация страны',
+        max_length=10,
+        blank=True,
+        unique=True
+    )
 
     class Meta:
         verbose_name = 'Страна'
