@@ -6,6 +6,7 @@ import aiohttp
 from django.core.management.base import BaseCommand
 from django.db.utils import OperationalError
 from dotenv import load_dotenv
+from tqdm import tqdm
 
 from users.models import Country
 
@@ -28,7 +29,7 @@ async def get_countries(params):
                                     name_ru=country['name'],
                                     name_en=country['localizedNames']['en'],
                                     iso=country.get('iso')
-                                ) for country in response['result']
+                                ) for country in tqdm(response['result'])
                             ]
                         )
                     else:

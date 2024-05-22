@@ -6,56 +6,64 @@ import asyncio
 from django.db.utils import OperationalError
 import aiohttp
 import copy
+from tqdm.asyncio import tqdm, trange
 
 load_dotenv()
-
+async def async_generator(limit):
+    for i in range(1, limit + 1):
+        yield i
 
 async def get_cities():
 
-    connection = aiohttp.TCPConnector(limit_per_host=8)
-    timeout = aiohttp.ClientTimeout(total=30)
+    connection = aiohttp.TCPConnector(limit=9)
+    timeout = aiohttp.ClientTimeout(total=300)
     parameters: dict = {
         'apiKey': os.getenv('GEOHELPER_KEY'),
         'locale[lang]': os.getenv('GEOHELPER_LANG'),
         'locale[fallbackLang]': os.getenv('GEOHELPER_LANG'),
-        'filter[countryIso]': 'AT',
         'pagination[limit]': 100
     }
-
     async with aiohttp.ClientSession(
             timeout=timeout,
             connector=connection
     ) as session:
-        async with session.get(
+        async for country in Country.objects.values('iso', 'name_ru'):
+            parameters['filter[countryIso]'] = country['iso']
+            print(country['name_ru'])
+            async with session.get(
                 f'{os.getenv("GEOHELPER_URL")}/api/v1/cities',
                 params=parameters
-        ) as response:
-            response = await response.json()
-            pages = response.get('pagination').get('totalPageCount')
-            print(pages)
-            parameters_page = copy.deepcopy(parameters)
-            print(parameters_page['filter[countryIso]'])
-            country = await Country.objects.aget(
-                iso=parameters_page['filter[countryIso]']
-            )
-            print(country)
-            for page in range(1, pages + 1):
-                parameters_page['pagination[page]'] = page
-                async with session.get(
-                        f'{os.getenv("GEOHELPER_URL")}/api/v1/cities',
-                        params=parameters_page
-                ) as response_page:
-                    response_page = await response_page.json()
-                    if response_page['success']:
-                        await City.objects.abulk_create(
-                            [
-                                City(
-                                    name_ru=city.get('name'),
-                                    name_en=city['localizedNames']['en'],
-                                    country=country
-                                ) for city in response_page['result']
-                            ]
-                        )
+            ) as response:
+                response = await response.json()
+                pages = response.get('pagination').get('totalPageCount')
+                parameters_page = copy.deepcopy(parameters)
+                country = await Country.objects.aget(
+                    iso=parameters_page['filter[countryIso]']
+                )
+                all_cities = {}
+                async for page in trange(1, pages + 1):
+                    parameters_page['pagination[page]'] = page
+                    async with session.get(
+                            f'{os.getenv("GEOHELPER_URL")}/api/v1/cities',
+                            params=parameters_page
+                    ) as response_page:
+                        response_page_answer = await response_page.json()
+                        if response_page_answer['success']:
+                            for city in response_page_answer['result']:
+                                if not city.get('name') in all_cities.keys():
+                                    all_cities[city.get('name')] = city.get(
+                                        'localizedNames'
+                                    ).get('en')
+                print(all_cities)
+                await City.objects.abulk_create(
+                    [
+                        City(
+                            name_ru=city_ru,
+                            name_en=city_en,
+                            country=country
+                        ) for city_ru, city_en in all_cities.items()
+                    ]
+                )
 
 
 class Command(BaseCommand):
