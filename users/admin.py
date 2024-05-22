@@ -1,4 +1,17 @@
-# from django.contrib import admin
+from django.contrib import admin
+from users.models import User, Country
+
+
+@admin.register(User)
+class UserAdmin(admin.ModelAdmin):
+    list_display = ('id', 'username', 'email', 'is_staff', 'is_active')
+
+
+@admin.register(Country)
+class CountryAdmin(admin.ModelAdmin):
+    list_display = ('name_ru', 'name_en')
+
+
 # from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 # from django.contrib.auth import get_user_model
 #
