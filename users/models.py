@@ -78,6 +78,21 @@ class Style(models.Model):
         blank=True
     )
 
+
+class Material(models.Model):
+    name_ru = models.CharField(
+        'Русское название',
+        max_length=NAMES_LENGTH,
+        unique=True
+    )
+    name_en = models.CharField(
+        'Английское название',
+        max_length=NAMES_LENGTH,
+        unique=True,
+        blank=True
+    )
+
+
 class User(AbstractUser):
     """Класс описания пользователя"""
     USERNAME_FIELD = 'email'

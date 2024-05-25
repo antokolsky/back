@@ -1,11 +1,17 @@
 from django.contrib import admin
-from users.models import User, Country, UserInfo, Style
+from users.models import User, Country, UserInfo, Style, Material
 from django.utils.safestring import mark_safe
 
 
 @admin.register(Style)
 class StyleAdmin(admin.ModelAdmin):
     list_display = ('name_ru', 'name_en')
+
+
+@admin.register(Material)
+class MaterialAdmin(admin.ModelAdmin):
+    list_display = ('name_ru', 'name_en')
+
 
 @admin.register(User)
 class UserAdmin(admin.ModelAdmin):
