@@ -1,11 +1,24 @@
 from django.contrib import admin
-from users.models import User, Country, UserInfo, Style, Material
+from users.models import (
+    User, Country, UserInfo, Style, Material, CommunicationMethod
+)
 from django.utils.safestring import mark_safe
+
+
+def lists(model, model_field):
+    fields = [field.name for field in model._meta.fields]
+    fields.append(model_field)
+    return fields
 
 
 @admin.register(Style)
 class StyleAdmin(admin.ModelAdmin):
     list_display = ('name_ru', 'name_en')
+
+
+@admin.register(CommunicationMethod)
+class CommunicationMethodAdmin(admin.ModelAdmin):
+    list_display = [field.name for field in CommunicationMethod._meta.fields]
 
 
 @admin.register(Material)
@@ -20,14 +33,7 @@ class UserAdmin(admin.ModelAdmin):
 
 @admin.register(UserInfo)
 class UserInfoAdmin(admin.ModelAdmin):
-    list_display = (
-        'user',
-        'first_name_ru',
-        'first_name_eng',
-        'last_name_ru',
-        'last_name_en',
-        'avatar_preview',
-    )
+    list_display = lists(UserInfo, 'avatar_preview')
     readonly_fields = ('avatar_preview',)
 
     def avatar_preview(self, obj):

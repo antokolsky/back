@@ -5,6 +5,7 @@ from django.contrib.auth.models import AbstractUser
 
 EMAIL_LENGTH = 254
 NAMES_LENGTH = 100
+PHONE_LENGTH = 12
 
 
 class Country(models.Model):
@@ -78,6 +79,13 @@ class Style(models.Model):
         blank=True
     )
 
+    class Meta:
+        verbose_name = 'Стиль'
+        verbose_name_plural = 'Стили'
+
+    def __str__(self) -> str:
+        return f'{self.name_ru}'
+
 
 class Material(models.Model):
     name_ru = models.CharField(
@@ -91,6 +99,41 @@ class Material(models.Model):
         unique=True,
         blank=True
     )
+
+    class Meta:
+        verbose_name = 'Материал'
+        verbose_name_plural = 'Материалы'
+
+    def __str__(self) -> str:
+        return f'{self.name_ru}'
+
+
+class CommunicationMethod(models.Model):
+    mobile_phone = models.CharField(
+        'Номер мобильного',
+        max_length=PHONE_LENGTH,
+        unique=True,
+        blank=True
+    )
+    telegram = models.CharField(
+        'Ник телеграмм',
+        max_length=255,
+        unique=True,
+        blank=True
+    )
+    whatsapp = models.CharField(
+        'Номер WhatsApp',
+        max_length=PHONE_LENGTH,
+        unique=True,
+        blank=True
+    )
+
+    class Meta:
+        verbose_name = 'Методы связи'
+        verbose_name_plural = 'Методы связи'
+
+    def __str__(self) -> str:
+        return f'{self.mobile_phone}'
 
 
 class User(AbstractUser):
@@ -139,3 +182,37 @@ class UserInfo(models.Model):
         related_name='users_info',
         verbose_name='Стили'
     )
+    materials = models.ManyToManyField(
+        Material,
+        related_name='users_info',
+        verbose_name='Стили'
+    )
+    country = models.ForeignKey(
+        Country,
+        on_delete=models.CASCADE,
+        related_name='users_info',
+        verbose_name='Страна'
+    )
+    address = models.CharField(
+        'Адрес',
+        max_length=255,
+        unique=True
+    )
+    communication_method = models.OneToOneField(
+        CommunicationMethod,
+        on_delete=models.CASCADE,
+        related_name='users_info',
+        verbose_name='Методы связи'
+    )
+    projects = models.IntegerField('Проект')
+    edited_at = models.DateTimeField(
+        'Отредактировано',
+        auto_now=True
+    )
+
+    class Meta:
+        verbose_name = 'Информация о пользователе'
+        verbose_name_plural = 'Информация о пользователях'
+
+    def __str__(self) -> str:
+        return f'{self.user.username}'

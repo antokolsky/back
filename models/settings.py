@@ -125,3 +125,27 @@ STATICFILES_DIRS = [
    os.path.join(BASE_DIR, "/static_files/"),
 ]
 STATIC_ROOT = BASE_DIR / 'static_files/'
+
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSIONS_CLASSES': [
+        'rest_framework.permissions.IsAuthenticatedOrReadOnly',
+    ],
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication'
+    ],
+    # 'DEFAULT_PAGINATION_CLASS': 'api.paginations.CustomPagination',
+    'PAGE_SIZE': '6',
+}
+
+DJOSER = {
+    # 'SERIALIZERS': {
+    #     'user_create': 'api.serializers.CustomUserCreateSerializer',
+        # 'user': 'api.serializers.CustomUserSerializer',
+        # 'current_user': 'api.serializers.CustomUserSerializer'
+    # },
+    'PERMISSIONS': {
+        'user': ['djoser.permissions.CurrentUserOrAdminOrReadOnly'],
+        'user_list': ['rest_framework.permissions.IsAuthenticatedOrReadOnly']
+    },
+    'HIDE_USERS': True
+}
