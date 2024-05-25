@@ -65,23 +65,62 @@ class City(models.Model):
         return f'{self.country.name_ru} - {self.name_ru}'
 
 
+class Style(models.Model):
+    name_ru = models.CharField(
+        'Русское название',
+        max_length=NAMES_LENGTH,
+        unique=True
+    )
+    name_en = models.CharField(
+        'Английское название',
+        max_length=NAMES_LENGTH,
+        unique=True,
+        blank=True
+    )
+
 class User(AbstractUser):
     """Класс описания пользователя"""
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ('username', 'first_name', 'last_name')
+    REQUIRED_FIELDS = ('username',)
     email = models.EmailField(
         'Электронная почта',
         max_length=EMAIL_LENGTH,
         unique=True
     )
-    first_name = models.CharField('Имя', max_length=NAMES_LENGTH, blank=False)
-    last_name = models.CharField(
-        'Фамилия',
+    is_seller = models.BooleanField('Продавец', default=False)
+
+
+class UserInfo(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    first_name_ru = models.CharField(
+        'Имя русское',
         max_length=NAMES_LENGTH,
-        blank=False
-    )
-    phone_number = models.CharField(
-        'Номер телефона',
-        max_length=11,
         blank=True
+    )
+    first_name_eng = models.CharField(
+        'Имя английское',
+        max_length=NAMES_LENGTH,
+        blank=True
+    )
+    last_name_ru = models.CharField(
+        'Фамилия русская',
+        max_length=NAMES_LENGTH,
+        blank=True
+    )
+    last_name_en = models.CharField(
+        'Фамилия английская',
+        max_length=NAMES_LENGTH,
+        blank=True
+    )
+    avatar = models.ImageField(
+        'Аватар',
+        upload_to=f'avatars/',
+        default='avatars/default.png'
+    )
+    about_ru = models.TextField('О себе ru', default='')
+    about_en = models.TextField('О себе eng', blank=True)
+    style = models.ManyToManyField(
+        Style,
+        related_name='users_info',
+        verbose_name='Стили'
     )

@@ -1,10 +1,31 @@
 from django.contrib import admin
-from users.models import User, Country
+from users.models import User, Country, UserInfo, Style
+from django.utils.safestring import mark_safe
 
+
+@admin.register(Style)
+class StyleAdmin(admin.ModelAdmin):
+    list_display = ('name_ru', 'name_en')
 
 @admin.register(User)
 class UserAdmin(admin.ModelAdmin):
     list_display = ('id', 'username', 'email', 'is_staff', 'is_active')
+
+
+@admin.register(UserInfo)
+class UserInfoAdmin(admin.ModelAdmin):
+    list_display = (
+        'user',
+        'first_name_ru',
+        'first_name_eng',
+        'last_name_ru',
+        'last_name_en',
+        'avatar_preview',
+    )
+    readonly_fields = ('avatar_preview',)
+
+    def avatar_preview(self, obj):
+        return mark_safe(f'<img src="{obj.avatar.url}" width="100px">')
 
 
 @admin.register(Country)
