@@ -1,12 +1,9 @@
-from django.urls import path  # Импорт функции path для определения маршрутов URL.
-from .views import ProjectListCreateView, ProjectDetailView, ProjectInterestCreateView  # Импорт представлений из
-# текущего приложения.
+from django.urls import path
+from .views import ProjectListCreateView, ProjectDetailView, StyleListView, MaterialListView
 
 urlpatterns = [
-    path('', ProjectListCreateView.as_view(), name='project-list'),  # URL для списка проектов и создания нового
-    # проекта.
-    path('<int:pk>/', ProjectDetailView.as_view(), name='project-detail'),  # URL для просмотра, обновления и
-    # удаления проекта по его ID (pk).
-    path('<int:pk>/interest/', ProjectInterestCreateView.as_view(), name='project-interest'),  # URL для выражения
-    # интереса к проекту по его ID (pk).
+    path('', ProjectListCreateView.as_view(), name='project-list'),
+    path('<uuid:pk>/', ProjectDetailView.as_view(), name='project-detail'),
+    path('styles/', StyleListView.as_view(), name='style-list'),
+    path('materials/', MaterialListView.as_view(), name='material-list'),
 ]
