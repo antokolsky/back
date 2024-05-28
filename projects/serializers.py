@@ -1,18 +1,28 @@
-from rest_framework import serializers  # Импорт классов сериализации из DRF.
-from .models import Project, ProjectInterest  # Импорт моделей Project и ProjectInterest из текущей директории.
+from rest_framework import serializers
+from .models import Project, Style, Material
 
 
-class ProjectSerializer(serializers.ModelSerializer):  # Определение сериализатора для модели Project.
+class ProjectSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Project  # Указание модели, которую сериализатор будет использовать.
-        fields = '__all__'  # Указание, что необходимо сериализовать все поля модели.
-        read_only_fields = (
-        'owner', 'created_at', 'updated_at')  # Указание полей, которые будут доступны только для чтения.
+        model = Project
+        fields = [
+            'id', 'name_ru', 'name_en', 'avatar', 'other_photos', 'style', 'material',
+            'description_ru', 'description_en', 'prepayment', 'cost_of_project', 'total_cost',
+            'address', 'created_at', 'updated_at', 'author_id', 'is_moderated'
+        ]
+        read_only_fields = [
+            'name_en', 'description_en', 'prepayment', 'total_cost',
+            'created_at', 'updated_at', 'author', 'is_moderated'
+        ]
 
 
-class ProjectInterestSerializer(
-    serializers.ModelSerializer):  # Определение сериализатора для модели интереса к проектам.
+class StyleSerializer(serializers.ModelSerializer):
     class Meta:
-        model = ProjectInterest  # Указание модели, которую сериализатор будет использовать.
-        fields = '__all__'  # Сериализация всех полей модели.
-        read_only_fields = ('user', 'created_at')  # Поля доступные только для чтения.
+        model = Style
+        fields = '__all__'
+
+
+class MaterialSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Material
+        fields = '__all__'

@@ -1,49 +1,54 @@
-from django.db import models  # Импорт базовых классов моделей из Django.
-from django.contrib.auth import get_user_model  # Импорт функции для получения текущей активной модели пользователя.
-from django.core.validators import MinValueValidator, MaxValueValidator  # Импорт валидаторов для проверки значений.
-from imagekit.models import ProcessedImageField
-from imagekit.processors import ResizeToFill
+# models.py
+from django.db import models
+from django.contrib.auth import get_user_model
+from django.core.validators import MinValueValidator, MaxValueValidator
+import uuid
 
-User = get_user_model()  # Получение модели пользователя, используемой в проекте.
+User = get_user_model()
 
 
-class Project(models.Model):  # Определение новой модели Project, наследуемой от Model.
-    name = models.CharField(max_length=255,
-                            unique=True)  # Поле для названия проекта, уникальное, максимум 255 символов.
-    description = models.CharField(max_length=500)  # Поле описания проекта, ограничено 500 символами.
-    cost = models.DecimalField(max_digits=10, decimal_places=2, validators=[MinValueValidator(0)])  # Поле стоимости
-    # с валидацией, что она не может быть отрицательной.
-    has_3d_model = models.BooleanField(default=False)  # Булево поле, указывающее наличие 3D модели.
-    owner = models.ForeignKey(User, related_name='owned_projects',
-                              on_delete=models.CASCADE)  # Внешний ключ к модели пользователя. Указывает на владельца
-    # проекта.
-    created_at = models.DateTimeField(
-        auto_now_add=True)  # Поле даты создания проекта, устанавливается автоматически при создании.
-    updated_at = models.DateTimeField(
-        auto_now=True)  # Поле даты последнего обновления проекта, устанавливается автоматически при каждом сохранении.
-    photos = ProcessedImageField(upload_to='project_photos',
-                                 processors=[ResizeToFill(100, 50)],
-                                 format='JPEG',
-                                 options={'quality': 60})
+class Style(models.Model):
+    """Модель для стилей."""
+    name_ru = models.CharField(max_length=255)
+    name_en = models.CharField(max_length=255)
 
     def __str__(self):
-        return self.name  # Метод для отображения объекта в виде строки, возвращает имя проекта.
+        return self.name_ru
 
 
-class ProjectInterest(models.Model):  # Определение модели интереса к проектам.
-    project = models.ForeignKey(Project, related_name='interested_users',
-                                on_delete=models.CASCADE)  # Внешний ключ к модели Project.
-    user = models.ForeignKey(User, related_name='interested_projects',
-                             on_delete=models.CASCADE)  # Внешний ключ к модели пользователя, указывает на
-    # пользователя, проявившего интерес.
-    created_at = models.DateTimeField(
-        auto_now_add=True)  # Поле даты проявления интереса, устанавливается автоматически при создании.
-
-    class Meta:
-        unique_together = ('project',
-                           'user')  # Уникальный составной ключ, не позволяющий пользователю проявить интерес к
-        # проекту более одного раза.
+class Material(models.Model):
+    """Модель для материалов."""
+    name_ru = models.CharField(max_length=255)
+    name_en = models.CharField(max_length=255)
 
     def __str__(self):
-        return f"{self.user.username} - {self.project.name}"  # Строковое представление объекта, включает имя
-        # пользователя и название проекта.
+        return self.name_ru
+
+
+class Project(models.Model):
+    """Модель работы автора"""
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    name_ru = models.CharField(max_length=50)
+    name_en = models.CharField(max_length=50, null=True, blank=True)
+    avatar = models.URLField(max_length=200)
+    other_photos = models.JSONField(default=list, blank=True)
+    style = models.ManyToManyField(Style)
+    material = models.ManyToManyField(Material)
+    description_ru = models.CharField(max_length=1000)
+    description_en = models.CharField(max_length=1000, null=True, blank=True)
+    prepayment = models.FloatField(null=True, blank=True)
+    cost_of_project = models.IntegerField(validators=[MinValueValidator(100), MaxValueValidator(100000)])
+    total_cost = models.IntegerField(null=True, blank=True)
+    address = models.CharField(max_length=1000)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    author_id = models.ForeignKey(User, related_name='projects', on_delete=models.SET_NULL, null=True)
+    is_moderated = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.name_ru
+
+    def save(self, *args, **kwargs):
+        if self.prepayment and self.cost_of_project:
+            self.total_cost = int(self.prepayment) + self.cost_of_project
+        super().save(*args, **kwargs)
