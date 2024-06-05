@@ -1,24 +1,27 @@
 from django.urls import include, path
 from rest_framework.routers import DefaultRouter
-from api.views import CustomUserViewSet
 from rest_framework_simplejwt.views import (
-    TokenRefreshView,
     TokenObtainPairView,
-    TokenVerifyView
+    TokenRefreshView,
+    TokenVerifyView,
 )
 
+from api.views import CountryViewSet, CustomUserViewSet
+
 router_v1 = DefaultRouter()
-router_v1.register('users', CustomUserViewSet, basename='users')
+router_v1.register("users", CustomUserViewSet, basename="users")
+router_v1.register("countries", CountryViewSet, basename="countries")
 
 urlpatterns = [
-    path('', TokenObtainPairView.as_view(), name='token_obtain_pair'),
-    path('refresh/', TokenRefreshView.as_view(), name='token_refresh'),
-    path('verify/', TokenVerifyView.as_view(), name='token_verify'),
-    path('auth/', include('djoser.urls.authtoken')),
     path(
-        'auth/token/refresh/',
-        TokenRefreshView.as_view(),
-        name='token_refresh'
+        "auth/get_tokens",
+        TokenObtainPairView.as_view(),
+        name="token_obtain_pair",
     ),
-    path('', include(router_v1.urls))
+    path("auth/refresh", TokenRefreshView.as_view(), name="token_refresh"),
+    path("auth/verify/", TokenVerifyView.as_view(), name="token_verify"),
+    path(
+        "auth/token/refresh/", TokenRefreshView.as_view(), name="token_refresh"
+    ),
+    path("", include(router_v1.urls)),
 ]
