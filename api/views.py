@@ -1,7 +1,4 @@
-import re
-
 from django.contrib.auth import get_user_model
-from django.shortcuts import get_object_or_404
 from djoser.views import UserViewSet
 from rest_framework import status
 from rest_framework.decorators import action
@@ -10,7 +7,7 @@ from rest_framework.response import Response
 from rest_framework.viewsets import ReadOnlyModelViewSet
 
 from api.serializers import CountrySerializer
-from users.models import Country, UserInfo
+from users.models import Country
 
 User = get_user_model()
 
@@ -31,7 +28,6 @@ class CustomUserViewSet(UserViewSet):
                 status=status.HTTP_403_FORBIDDEN,
             )
         return Response("None", status=status.HTTP_200_OK)
-        user_information = get_object_or_404(UserInfo, user=id)
 
 
 class CountryViewSet(ReadOnlyModelViewSet):
