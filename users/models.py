@@ -63,7 +63,10 @@ class Style(models.Model):
         "Русское название", max_length=NAMES_LENGTH, unique=True
     )
     name_en = models.CharField(
-        "Английское название", max_length=NAMES_LENGTH, unique=True, blank=True
+        "Английское название",
+        max_length=NAMES_LENGTH,
+        unique=True,
+        blank=True,
     )
 
     class Meta:
@@ -79,7 +82,10 @@ class Material(models.Model):
         "Русское название", max_length=NAMES_LENGTH, unique=True
     )
     name_en = models.CharField(
-        "Английское название", max_length=NAMES_LENGTH, unique=True, blank=True
+        "Английское название",
+        max_length=NAMES_LENGTH,
+        unique=True,
+        blank=True,
     )
 
     class Meta:
@@ -113,7 +119,7 @@ class User(AbstractUser):
     """Класс описания пользователя"""
 
     USERNAME_FIELD = "email"
-    REQUIRED_FIELDS = ("username", "is_seller")
+    REQUIRED_FIELDS = ("username",)
     email = models.EmailField(
         "Электронная почта", max_length=EMAIL_LENGTH, unique=True
     )
@@ -135,7 +141,7 @@ class UserInfo(models.Model):
         "Фамилия английская", max_length=NAMES_LENGTH, blank=True
     )
     avatar = models.ImageField(
-        "Аватар", upload_to=f"avatars/", default="avatars/default.png"
+        "Аватар", upload_to="avatars/", default="avatars/default.png"
     )
     about_ru = models.TextField("О себе ru", default="")
     about_en = models.TextField("О себе eng", blank=True)
