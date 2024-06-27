@@ -6,20 +6,24 @@ from rest_framework.viewsets import ReadOnlyModelViewSet, ModelViewSet
 from api.serializers import (
     CountrySerializer,
     UserInfoReadSerializer,
-    CustomUserEnglishSerializer,
+    CustomUserSerializer,
 )
 from users.models import Country, UserInfo
 
 User = get_user_model()
 
 
-class CustomUserViewSet(UserViewSet):
+class CustomUserRussianViewSet(UserViewSet):
     queryset = User.objects.all()
+    serializer_class = CustomUserSerializer
+
+    def perform_create(self, serializer):
+        serializer.save(is_seller=False)
 
 
 class CustomUserEnglishViewSet(UserViewSet):
     queryset = User.objects.all()
-    serializer_class = CustomUserEnglishSerializer
+    serializer_class = CustomUserSerializer
 
     def perform_create(self, serializer):
         serializer.save(is_seller=True)

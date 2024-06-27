@@ -6,7 +6,7 @@ from users.models import Country, UserInfo
 User = get_user_model()
 
 
-class CustomUserEnglishSerializer(ModelSerializer):
+class CustomUserSerializer(ModelSerializer):
     class Meta:
         model = User
         exclude = ("is_seller",)

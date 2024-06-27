@@ -1,7 +1,7 @@
 from django.urls import include, path
 from rest_framework.routers import DefaultRouter
 from api.views import (
-    CustomUserViewSet,
+    CustomUserRussianViewSet,
     CountryViewSet,
     CustomUserEnglishViewSet,
 )
@@ -14,9 +14,9 @@ from rest_framework_simplejwt.views import (
 router_eng = DefaultRouter()
 router_eng.register("users", CustomUserEnglishViewSet, basename="eng_users")
 
-router_v1 = DefaultRouter()
-router_v1.register("users", CustomUserViewSet, basename="users")
-router_v1.register("countries", CountryViewSet, basename="countries")
+router_ru = DefaultRouter()
+router_ru.register("users", CustomUserRussianViewSet, basename="users")
+router_ru.register("countries", CountryViewSet, basename="countries")
 
 urlpatterns = [
     path(
@@ -27,5 +27,5 @@ urlpatterns = [
     path("auth/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
     path("auth/verify/", TokenVerifyView.as_view(), name="token_verify"),
     path("english/", include(router_eng.urls)),
-    path("", include(router_v1.urls)),
+    path("russian/", include(router_ru.urls)),
 ]
