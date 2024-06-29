@@ -30,6 +30,7 @@ INSTALLED_APPS = [
     "users",
     "projects",
     "api.apps.ApiConfig",
+    "static_pages.apps.StaticPagesConfig"
 ]
 
 AUTH_USER_MODEL = "users.User"

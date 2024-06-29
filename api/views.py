@@ -7,7 +7,9 @@ from api.serializers import (
     CountrySerializer,
     UserInfoReadSerializer,
     CustomUserSerializer,
+    StaticPageSerializer
 )
+from static_pages.models import StaticPages
 from users.models import Country, UserInfo
 
 User = get_user_model()
@@ -45,3 +47,11 @@ class CountryViewSet(ReadOnlyModelViewSet):
     queryset = Country.objects.all()
     pagination_class = None
     serializer_class = CountrySerializer
+
+
+class StaticPagesViewSet(ReadOnlyModelViewSet):
+    """ViewSet for the StaticPages model."""
+
+    queryset = StaticPages.objects.all()
+    pagination_class = None
+    serializer_class = StaticPageSerializer
