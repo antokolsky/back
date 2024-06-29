@@ -1,6 +1,7 @@
 from django.contrib.auth import get_user_model
 from rest_framework.serializers import ModelSerializer
 
+from static_pages.models import StaticPages
 from users.models import Country, UserInfo
 
 User = get_user_model()
@@ -26,3 +27,11 @@ class UserInfoReadSerializer(ModelSerializer):
     class Meta:
         model = UserInfo
         fields = "__all__"
+
+
+class StaticPageSerializer(ModelSerializer):
+    """Сериализатор модели Статических страниц."""
+
+    class Meta:
+        model = StaticPages
+        fields = '__all__'

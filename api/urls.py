@@ -4,6 +4,7 @@ from api.views import (
     CustomUserRussianViewSet,
     CountryViewSet,
     CustomUserEnglishViewSet,
+    StaticPagesViewSet
 )
 from rest_framework_simplejwt.views import (
     TokenRefreshView,
@@ -17,6 +18,9 @@ router_eng.register("users", CustomUserEnglishViewSet, basename="eng_users")
 router_ru = DefaultRouter()
 router_ru.register("users", CustomUserRussianViewSet, basename="users")
 router_ru.register("countries", CountryViewSet, basename="countries")
+router_ru.register(
+    'static_pages', StaticPagesViewSet, basename="static_pages"
+)
 
 urlpatterns = [
     path(
