@@ -25,10 +25,12 @@ INSTALLED_APPS = [
     "rest_framework",
     "rest_framework.authtoken",
     "rest_framework_simplejwt",
+    "drf_yasg",
     "djoser",
     "users",
     "projects",
     "api.apps.ApiConfig",
+    "static_pages.apps.StaticPagesConfig"
 ]
 
 AUTH_USER_MODEL = "users.User"

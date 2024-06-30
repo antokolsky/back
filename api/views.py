@@ -1,37 +1,80 @@
-import re
-
 from django.contrib.auth import get_user_model
-from django.shortcuts import get_object_or_404
 from djoser.views import UserViewSet
-from rest_framework import status
+from rest_framework.permissions import (
+    IsAuthenticatedOrReadOnly, IsAuthenticated, SAFE_METHODS
+)
+from rest_framework.viewsets import ReadOnlyModelViewSet, ModelViewSet
 from rest_framework.decorators import action
-from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from rest_framework.viewsets import ReadOnlyModelViewSet
+from rest_framework import status
 
-from api.serializers import CountrySerializer
+from api.serializers import (
+    CountrySerializer,
+    UserInfoReadSerializer,
+    CustomUserSerializer,
+    StaticPageSerializer,
+    ProjectSerializer,
+    ProjectOnMainPageSerializer,
+    UserListSerializer
+)
+from static_pages.models import StaticPages
 from users.models import Country, UserInfo
+from projects.models import Project
 
 User = get_user_model()
 
 
-class CustomUserViewSet(UserViewSet):
+class CustomUserRussianViewSet(UserViewSet):
     queryset = User.objects.all()
+    serializer_class = CustomUserSerializer
+
+    def perform_create(self, serializer):
+        serializer.save(is_seller=False)
 
     @action(
         detail=True,
-        methods=("POST", "GET"),
-        permission_classes=(IsAuthenticated,),
+        methods=('get',),
+        permission_classes=[IsAuthenticated]
     )
-    def user_info(self, request, id: int):
-        user: int = request.user.id
-        if int(id) != int(user):
-            return Response(
-                {"errors": f"Not allowed for this user {user}, id={id}"},
-                status=status.HTTP_403_FORBIDDEN,
-            )
-        return Response("None", status=status.HTTP_200_OK)
-        user_information = get_object_or_404(UserInfo, user=id)
+    def on_main_page(self, request, id):
+        """Returning the list of projects of the logged user for itself."""
+        if request.user.id == int(id):
+            if not Project.objects.filter(owner=request.user).count() > 0:
+                return Response(
+                    status=status.HTTP_204_NO_CONTENT
+                )
+            queryset = Project.objects.filter(
+                owner=request.user
+            ).order_by('-id')[:6]
+            serializer = ProjectOnMainPageSerializer(queryset, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(
+            {'error': 'You are not allowed to access this resource'},
+            status=status.HTTP_403_FORBIDDEN
+        )
+
+
+class RandomUsersOnMainPageViewSet(ReadOnlyModelViewSet):
+    queryset = UserInfo.objects.filter(user__is_seller=True).order_by('?')[:3]
+    serializer_class = UserListSerializer
+
+
+class CustomUserEnglishViewSet(UserViewSet):
+    queryset = User.objects.all()
+    serializer_class = CustomUserSerializer
+
+    def perform_create(self, serializer):
+        serializer.save(is_seller=True)
+
+
+class UserInfoViewSet(ModelViewSet):
+    queryset = UserInfo.objects.all()
+    permission_classes = (IsAuthenticatedOrReadOnly,)
+
+    def get_serializer_class(self):
+        if self.request.method in SAFE_METHODS:
+            return UserInfoReadSerializer
+        return CountrySerializer
 
 
 class CountryViewSet(ReadOnlyModelViewSet):
@@ -40,3 +83,24 @@ class CountryViewSet(ReadOnlyModelViewSet):
     queryset = Country.objects.all()
     pagination_class = None
     serializer_class = CountrySerializer
+
+
+class StaticPagesViewSet(ReadOnlyModelViewSet):
+    """ViewSet for the StaticPages model."""
+
+    queryset = StaticPages.objects.all()
+    pagination_class = None
+    serializer_class = StaticPageSerializer
+
+
+class ProjectViewSet(ReadOnlyModelViewSet):
+    """ViewSet Для вывода на главную страницу"""
+    queryset = Project.objects.all()
+    pagination_class = None
+    serializer_class = ProjectSerializer
+
+
+class RandomProjectsOnMainPageViewSet(ReadOnlyModelViewSet):
+    """Returning random projects on main page"""
+    queryset = Project.objects.order_by('?')[:6]
+    serializer_class = ProjectOnMainPageSerializer
