@@ -3,7 +3,7 @@ from rest_framework.serializers import ModelSerializer
 
 from static_pages.models import StaticPages
 from users.models import Country, UserInfo
-
+from projects.models import Project
 User = get_user_model()
 
 
@@ -11,6 +11,13 @@ class CustomUserSerializer(ModelSerializer):
     class Meta:
         model = User
         exclude = ("is_seller",)
+
+
+class UserListSerializer(ModelSerializer):
+    """Сериализатор модели для списка пользователей на главной странице."""
+    class Meta:
+        model = UserInfo
+        fields = ('avatar', 'first_name_ru', 'last_name_ru')
 
 
 class CountrySerializer(ModelSerializer):
@@ -35,3 +42,17 @@ class StaticPageSerializer(ModelSerializer):
     class Meta:
         model = StaticPages
         fields = '__all__'
+
+
+class ProjectSerializer(ModelSerializer):
+    """Сериализатор модели Статических страниц."""
+
+    class Meta:
+        model = Project
+        fields = '__all__'
+
+
+class ProjectOnMainPageSerializer(ModelSerializer):
+    class Meta:
+        model = Project
+        fields = ('name', 'cost', 'photos')

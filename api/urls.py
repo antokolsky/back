@@ -4,7 +4,10 @@ from api.views import (
     CustomUserRussianViewSet,
     CountryViewSet,
     CustomUserEnglishViewSet,
-    StaticPagesViewSet
+    StaticPagesViewSet,
+    ProjectViewSet,
+    RandomProjectsOnMainPageViewSet,
+    RandomUsersOnMainPageViewSet
 )
 from rest_framework_simplejwt.views import (
     TokenRefreshView,
@@ -20,6 +23,17 @@ router_ru.register("users", CustomUserRussianViewSet, basename="users")
 router_ru.register("countries", CountryViewSet, basename="countries")
 router_ru.register(
     'static_pages', StaticPagesViewSet, basename="static_pages"
+)
+router_ru.register('projects', ProjectViewSet, basename="projects")
+router_ru.register(
+    'random_projects_on_main_page',
+    RandomProjectsOnMainPageViewSet,
+    basename="random_projects_on_main_page"
+)
+router_ru.register(
+    'random_authors_on_main_page',
+    RandomUsersOnMainPageViewSet,
+    basename='random_authors_on_main_page'
 )
 
 urlpatterns = [
