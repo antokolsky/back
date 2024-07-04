@@ -123,12 +123,12 @@ MEDIA_URL = "/media/"
 
 MEDIA_ROOT = BASE_DIR / "media"
 
-STATIC_URL = "/static_files/"
+STATIC_URL = "/static_files_backend/"
 
 # STATICFILES_DIRS = [
 #     os.path.join(BASE_DIR, "static/"),
 # ]
-STATIC_ROOT = BASE_DIR / "static_files/"
+STATIC_ROOT = BASE_DIR / "static_files_backend/"
 
 REST_FRAMEWORK = {
     "DEFAULT_PERMISSIONS_CLASSES": [
