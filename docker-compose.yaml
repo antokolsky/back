@@ -21,7 +21,7 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
-    command: bash -c "python manage.py migrate"
+#    command: bash -c "python manage.py migrate"
     env_file:
       - ./.env
     volumes:
