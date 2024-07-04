@@ -15,6 +15,7 @@ DEBUG = config("DEBUG", default=True, cast=bool)
 
 ALLOWED_HOSTS = ["*"]
 CSRF_TRUSTED_ORIGINS = ["http://antokolsky.ddns.net"]
+SECURE_CROSS_ORIGIN_OPENER_POLICY = None
 INSTALLED_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
