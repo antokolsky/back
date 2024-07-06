@@ -1,9 +1,10 @@
 from django.contrib.auth import get_user_model
 from rest_framework.serializers import ModelSerializer
 
+from projects.models import Project
 from static_pages.models import StaticPages
 from users.models import Country, UserInfo
-from projects.models import Project
+
 User = get_user_model()
 
 
@@ -15,6 +16,7 @@ class CustomUserSerializer(ModelSerializer):
 
 class UserListSerializer(ModelSerializer):
     """Сериализатор модели для списка пользователей на главной странице."""
+
     class Meta:
         model = UserInfo
         fields = ('avatar', 'first_name_ru', 'last_name_ru')
