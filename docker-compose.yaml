@@ -7,7 +7,7 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data/
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U antokolsky -d antokolsky", "--quiet"]
+      test: [ "CMD-SHELL", "pg_isready -U antokolsky -d antokolsky", "--quiet" ]
       interval: 10s
       timeout: 50s
       retries: 3
@@ -18,15 +18,13 @@ services:
   backend:
     container_name: backend_container
     image: databorodata/antokolsky_backend:latest
-    # image: test
     depends_on:
       postgres:
         condition: service_healthy
-#    command: bash -c "python manage.py migrate"
     env_file:
       - ./.env
     volumes:
-      - static_backend:/backend_static
+      - static_backend:/static_files
   
   frontend:
     container_name: frontend_container
@@ -46,7 +44,7 @@ services:
       - frontend
       - backend
       - postgres
-  
+
 volumes:
   postgres_data:
   static_backend:

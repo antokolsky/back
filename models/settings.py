@@ -15,6 +15,7 @@ DEBUG = config("DEBUG", default=True, cast=bool)
 
 ALLOWED_HOSTS = ["*"]
 CSRF_TRUSTED_ORIGINS = ["http://antokolsky.ddns.net"]
+SECURE_CROSS_ORIGIN_OPENER_POLICY = None
 INSTALLED_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
@@ -123,7 +124,7 @@ MEDIA_URL = "/media/"
 
 MEDIA_ROOT = BASE_DIR / "media"
 
-STATIC_URL = "/static_files/"
+STATIC_URL = "/static/"
 
 # STATICFILES_DIRS = [
 #     os.path.join(BASE_DIR, "static/"),
