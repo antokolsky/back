@@ -17,7 +17,7 @@ ALLOWED_HOSTS = ["*"]
 CSRF_TRUSTED_ORIGINS = ["http://antokolsky.ddns.net"]
 # SECURE_CROSS_ORIGIN_OPENER_POLICY = None
 CORS_ORIGIN_WHITELIST = [
-    'http://antokolsky.ddns.net:8000',
+    '*',
 ]
 INSTALLED_APPS = [
     "django.contrib.admin",
