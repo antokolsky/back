@@ -1,4 +1,50 @@
-# from django.contrib import admin
+from django.contrib import admin
+from users.models import (
+    User, Country, UserInfo, Style, Material, CommunicationMethod
+)
+from django.utils.safestring import mark_safe
+
+
+def lists(model, model_field):
+    fields = [field.name for field in model._meta.fields]
+    fields.append(model_field)
+    return fields
+
+
+@admin.register(Style)
+class StyleAdmin(admin.ModelAdmin):
+    list_display = ('name_ru', 'name_en')
+
+
+@admin.register(CommunicationMethod)
+class CommunicationMethodAdmin(admin.ModelAdmin):
+    list_display = [field.name for field in CommunicationMethod._meta.fields]
+
+
+@admin.register(Material)
+class MaterialAdmin(admin.ModelAdmin):
+    list_display = ('name_ru', 'name_en')
+
+
+@admin.register(User)
+class UserAdmin(admin.ModelAdmin):
+    list_display = ('id', 'username', 'email', 'is_staff', 'is_active')
+
+
+@admin.register(UserInfo)
+class UserInfoAdmin(admin.ModelAdmin):
+    list_display = lists(UserInfo, 'avatar_preview')
+    readonly_fields = ('avatar_preview',)
+
+    def avatar_preview(self, obj):
+        return mark_safe(f'<img src="{obj.avatar.url}" width="100px">')
+
+
+@admin.register(Country)
+class CountryAdmin(admin.ModelAdmin):
+    list_display = ('name_ru', 'name_en')
+
+
 # from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 # from django.contrib.auth import get_user_model
 #
