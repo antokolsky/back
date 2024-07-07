@@ -8,7 +8,12 @@ from rest_framework.permissions import (
     SAFE_METHODS,
 )
 from rest_framework.response import Response
-from rest_framework.viewsets import ReadOnlyModelViewSet, ModelViewSet
+from rest_framework.viewsets import (
+    ModelViewSet,
+    ReadOnlyModelViewSet,
+    mixins,
+    GenericViewSet,
+)
 
 from api.serializers import (
     CountrySerializer,
@@ -18,6 +23,7 @@ from api.serializers import (
     ProjectSerializer,
     ProjectOnMainPageSerializer,
     UserListSerializer,
+    MainPageRuSerializer,
 )
 from projects.models import Project
 from static_pages.models import StaticPages
@@ -31,7 +37,7 @@ class CustomUserRussianViewSet(UserViewSet):
     serializer_class = CustomUserSerializer
 
     def perform_create(self, serializer):
-        serializer.save(is_seller=True)
+        serializer.save(is_seller=False)
 
     @action(
         detail=True, methods=('get',), permission_classes=[IsAuthenticated]
@@ -62,7 +68,7 @@ class CustomUserEnglishViewSet(UserViewSet):
     serializer_class = CustomUserSerializer
 
     def perform_create(self, serializer):
-        serializer.save(is_seller=False)
+        serializer.save(is_seller=True)
 
 
 class UserInfoViewSet(ModelViewSet):
@@ -104,3 +110,8 @@ class RandomProjectsOnMainPageViewSet(ReadOnlyModelViewSet):
 
     queryset = Project.objects.order_by('?')[:6]
     serializer_class = ProjectOnMainPageSerializer
+
+
+class IndexPageViewSet(mixins.ListModelMixin, GenericViewSet):
+    queryset = User.objects.all()
+    serializer_class = MainPageRuSerializer
