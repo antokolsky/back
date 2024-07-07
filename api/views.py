@@ -9,8 +9,10 @@ from rest_framework.permissions import (
 )
 from rest_framework.response import Response
 from rest_framework.viewsets import (
-    ReadOnlyModelViewSet,
     ModelViewSet,
+    ReadOnlyModelViewSet,
+    mixins,
+    GenericViewSet,
 )
 
 from api.serializers import (
@@ -110,12 +112,6 @@ class RandomProjectsOnMainPageViewSet(ReadOnlyModelViewSet):
     serializer_class = ProjectOnMainPageSerializer
 
 
-class IndexPageViewSet(ReadOnlyModelViewSet):
+class IndexPageViewSet(mixins.ListModelMixin, GenericViewSet):
     queryset = User.objects.all()
     serializer_class = MainPageRuSerializer
-
-    # def list(self, request):
-    #     serializer = MainPageRuSerializer()
-    #     if not request.user.is_authenticated:
-    #         serializer = MainPageRuSerializer(self.queryset, many=True)
-    #     # return Response(serializer.data, status=status.HTTP_200_OK)
