@@ -16,6 +16,9 @@ DEBUG = config("DEBUG", default=True, cast=bool)
 ALLOWED_HOSTS = ["*"]
 CSRF_TRUSTED_ORIGINS = ["http://antokolsky.ddns.net"]
 # SECURE_CROSS_ORIGIN_OPENER_POLICY = None
+CORS_ORIGIN_WHITELIST = [
+    'http://antokolsky.ddns.net:8000',
+]
 INSTALLED_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
@@ -32,6 +35,7 @@ INSTALLED_APPS = [
     "projects",
     "api.apps.ApiConfig",
     "static_pages.apps.StaticPagesConfig",
+    "corsheaders",
 ]
 
 AUTH_USER_MODEL = "users.User"
@@ -54,6 +58,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
 ]
 
 ROOT_URLCONF = "models.urls"
