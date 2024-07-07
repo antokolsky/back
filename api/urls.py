@@ -1,5 +1,11 @@
 from django.urls import include, path
 from rest_framework.routers import DefaultRouter
+from rest_framework_simplejwt.views import (
+    TokenRefreshView,
+    TokenObtainPairView,
+    TokenVerifyView,
+)
+
 from api.views import (
     CustomUserRussianViewSet,
     CountryViewSet,
@@ -7,12 +13,8 @@ from api.views import (
     StaticPagesViewSet,
     ProjectViewSet,
     RandomProjectsOnMainPageViewSet,
-    RandomUsersOnMainPageViewSet
-)
-from rest_framework_simplejwt.views import (
-    TokenRefreshView,
-    TokenObtainPairView,
-    TokenVerifyView,
+    RandomUsersOnMainPageViewSet,
+    IndexPageViewSet,
 )
 
 router_eng = DefaultRouter()
@@ -24,16 +26,17 @@ router_ru.register("countries", CountryViewSet, basename="countries")
 router_ru.register(
     'static_pages', StaticPagesViewSet, basename="static_pages"
 )
+router_ru.register('index', IndexPageViewSet, basename="main_page")
 router_ru.register('projects', ProjectViewSet, basename="projects")
 router_ru.register(
     'random_projects_on_main_page',
     RandomProjectsOnMainPageViewSet,
-    basename="random_projects_on_main_page"
+    basename="random_projects_on_main_page",
 )
 router_ru.register(
     'random_authors_on_main_page',
     RandomUsersOnMainPageViewSet,
-    basename='random_authors_on_main_page'
+    basename='random_authors_on_main_page',
 )
 
 urlpatterns = [
