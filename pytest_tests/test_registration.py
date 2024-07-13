@@ -27,3 +27,4 @@ def test_registration_russian_user(api_client, url, is_seller):
     assert (
         User.objects.get(email=payload['email']).is_seller is is_seller
     ), f"Только что созданный пользователь не является продавцом"
+    response = api_client.get('/api/russian/users/')

@@ -37,7 +37,7 @@ class CustomUserRussianViewSet(UserViewSet):
     serializer_class = CustomUserSerializer
 
     def perform_create(self, serializer):
-        serializer.save(is_seller=False)
+        serializer.save(is_seller=True)
 
     @action(
         detail=True, methods=('get',), permission_classes=[IsAuthenticated]
@@ -68,7 +68,7 @@ class CustomUserEnglishViewSet(UserViewSet):
     serializer_class = CustomUserSerializer
 
     def perform_create(self, serializer):
-        serializer.save(is_seller=True)
+        serializer.save(is_seller=False)
 
 
 class UserInfoViewSet(ModelViewSet):
