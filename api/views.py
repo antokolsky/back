@@ -16,18 +16,18 @@ from rest_framework.viewsets import (
 )
 
 from api.serializers import (
-    CountrySerializer,
-    UserInfoReadSerializer,
+    # CountrySerializer,
+    # UserInfoReadSerializer,
     CustomUserSerializer,
     StaticPageSerializer,
     ProjectSerializer,
     ProjectOnMainPageSerializer,
-    UserListSerializer,
-    MainPageRuSerializer,
+    # UserListSerializer,
+    # MainPageRuSerializer,
 )
 from projects.models import Project
 from static_pages.models import StaticPages
-from users.models import Country, UserInfo
+from users.models import Country
 
 User = get_user_model()
 
@@ -58,9 +58,9 @@ class CustomUserRussianViewSet(UserViewSet):
         )
 
 
-class RandomUsersOnMainPageViewSet(ReadOnlyModelViewSet):
-    queryset = UserInfo.objects.filter(user__is_seller=True).order_by('?')[:3]
-    serializer_class = UserListSerializer
+# class RandomUsersOnMainPageViewSet(ReadOnlyModelViewSet):
+#     queryset = UserInfo.objects.filter(user__is_seller=True).order_by('?')[:3]
+#     serializer_class = UserListSerializer
 
 
 class CustomUserEnglishViewSet(UserViewSet):
@@ -71,22 +71,22 @@ class CustomUserEnglishViewSet(UserViewSet):
         serializer.save(is_seller=True)
 
 
-class UserInfoViewSet(ModelViewSet):
-    queryset = UserInfo.objects.all()
-    permission_classes = (IsAuthenticatedOrReadOnly,)
+# class UserInfoViewSet(ModelViewSet):
+#     queryset = UserInfo.objects.all()
+#     permission_classes = (IsAuthenticatedOrReadOnly,)
 
-    def get_serializer_class(self):
-        if self.request.method in SAFE_METHODS:
-            return UserInfoReadSerializer
-        return CountrySerializer
+#     def get_serializer_class(self):
+#         if self.request.method in SAFE_METHODS:
+#             return UserInfoReadSerializer
+#         return CountrySerializer
 
 
-class CountryViewSet(ReadOnlyModelViewSet):
-    """ViewSet for the Country model."""
+# class CountryViewSet(ReadOnlyModelViewSet):
+#     """ViewSet for the Country model."""
 
-    queryset = Country.objects.all()
-    pagination_class = None
-    serializer_class = CountrySerializer
+#     queryset = Country.objects.all()
+#     pagination_class = None
+#     serializer_class = CountrySerializer
 
 
 class StaticPagesViewSet(ReadOnlyModelViewSet):
@@ -112,6 +112,6 @@ class RandomProjectsOnMainPageViewSet(ReadOnlyModelViewSet):
     serializer_class = ProjectOnMainPageSerializer
 
 
-class IndexPageViewSet(mixins.ListModelMixin, GenericViewSet):
-    queryset = User.objects.all()
-    serializer_class = MainPageRuSerializer
+# class IndexPageViewSet(mixins.ListModelMixin, GenericViewSet):
+#     queryset = User.objects.all()
+#     serializer_class = MainPageRuSerializer

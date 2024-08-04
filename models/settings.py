@@ -33,10 +33,11 @@ INSTALLED_APPS = [
     "rest_framework_simplejwt",
     "drf_yasg",
     "djoser",
-    "users",
+    "users.apps.UsersConfig",
     "projects",
     "api.apps.ApiConfig",
     "static_pages.apps.StaticPagesConfig",
+    "countries.apps.CountriesConfig",
     "corsheaders",
 ]
 
@@ -151,11 +152,11 @@ REST_FRAMEWORK = {
 }
 
 DJOSER = {
-    # 'SERIALIZERS': {
-    #     'user_create': 'api.serializers.CustomUserCreateSerializer',
-    # 'user': 'api.serializers.CustomUserSerializer',
-    # 'current_user': 'api.serializers.CustomUserSerializer'
-    # },
+    'SERIALIZERS': {
+        #     'user_create': 'api.serializers.CustomUserCreateSerializer',
+        # 'user': 'users.serializers.CustomUserSerializer',
+        'current_user': 'users.serializers.CustomUserSerializer'
+    },
     "PERMISSIONS": {
         "user": ["djoser.permissions.CurrentUserOrAdminOrReadOnly"],
         "user_list": ["rest_framework.permissions.IsAuthenticatedOrReadOnly"],
@@ -169,6 +170,8 @@ SIMPLE_JWT = {
     "ROTATE_REFRESH_TOKENS": True,
     "UPDATE_LAST_LOGIN": True,
     "BLACKLIST_AFTER_ROTATION": True,
-    "ACCESSS_TOKEN_LIFETIME": timedelta(days=30),
+    "ACCESS_TOKEN_LIFETIME": timedelta(days=30),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
 }
+
+NAMES_LENGTH = 100
