@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     "projects",
     "api.apps.ApiConfig",
     "static_pages.apps.StaticPagesConfig",
+    "countries.apps.CountriesConfig",
     "corsheaders",
 ]
 
@@ -174,3 +175,5 @@ SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(days=30),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
 }
+
+NAMES_LENGTH = 100
