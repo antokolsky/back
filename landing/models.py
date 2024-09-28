@@ -102,6 +102,7 @@ class Project(models.Model):
         ],
         max_length=DIMENSION_MAX_VALUE,
     )
+    # TODO Убрать все цифры и слова в константы
     cost = models.PositiveIntegerField('Стоимость', max_length=100000)
     rating = models.IntegerField('Рейтинг', default=0)
 
@@ -112,3 +113,8 @@ class Project(models.Model):
 
     def __str__(self):
         return self.title
+# TODO Дописать модель для картинок проекта
+# TODO Дописать модель для моделей проекта
+# TODO Дописать модель для Респондента
+# TODO Дописать модель для формы заказа
+# TODO Дописать модель для Рода деятельности респондента
