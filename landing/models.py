@@ -106,7 +106,7 @@ class Project(models.Model):
             )
         ]
     )
-    cost = models.PositiveIntegerField('Стоимость', max_length=COST_MAX)
+    cost = models.PositiveIntegerField('Стоимость')
     rating = models.IntegerField('Рейтинг', default=RATING_DEFAULT)
 
     class Meta:
