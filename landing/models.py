@@ -82,8 +82,7 @@ class Project(models.Model):
                     DIMENSION_HEIGHT_NAME, DIMENSION_MIN_VALUE
                 ),
             )
-        ],
-        max_length=DIMENSION_MAX_VALUE,
+        ]
     )
     dimension_width = models.PositiveSmallIntegerField(
         DIMENSION_WIDTH_NAME,
@@ -94,8 +93,7 @@ class Project(models.Model):
                     DIMENSION_WIDTH_NAME, DIMENSION_MIN_VALUE
                 ),
             )
-        ],
-        max_length=DIMENSION_MAX_VALUE,
+        ]
     )
     dimension_depth = models.PositiveSmallIntegerField(
         DIMENSION_DEPTH_NAME,
@@ -106,8 +104,7 @@ class Project(models.Model):
                     DIMENSION_DEPTH_NAME, DIMENSION_MIN_VALUE
                 ),
             )
-        ],
-        max_length=DIMENSION_MAX_VALUE,
+        ]
     )
     cost = models.PositiveIntegerField('Стоимость', max_length=COST_MAX)
     rating = models.IntegerField('Рейтинг', default=RATING_DEFAULT)
