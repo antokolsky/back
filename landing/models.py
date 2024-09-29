@@ -35,22 +35,6 @@ DIMENSION_VALIDATOR_MESSAGE = '{} должна быть больше или ра
 COST_MAX = 100000
 RATING_DEFAULT = 0
 
-MATERIAL_VERBOSE = 'Материал'
-
-
-class Material(models.Model):
-    name_ru = models.CharField('Название на русском', max_length=100)
-    name_eng = models.CharField('Название на английском', max_length=100)
-
-    class Meta:
-        verbose_name = 'Материал'
-        verbose_name_plural = 'Материалы'
-        ordering = ('name_ru',)
-        unique_together = ('name_ru', 'name_eng')
-
-    def __str__(self):
-        return f'Создан материал: {self.name_ru} - {self.name_eng}'
-
 
 class Project(models.Model):
     author_name = models.CharField(
