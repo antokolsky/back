@@ -2,7 +2,7 @@ from django.db import models
 from django.core.validators import (
     MinLengthValidator,
     MaxLengthValidator,
-    MinValueValidator
+    MinValueValidator,
 )
 
 AUTHOR_NAME_VERBOSE = 'Имя автора'
@@ -123,25 +123,33 @@ class Project(models.Model):
 
 class ProjectImage(models.Model):
     project = models.ForeignKey(
-        Project,
-        on_delete=models.CASCADE,
-        related_name='project_images'
+        Project, on_delete=models.CASCADE, related_name='project_images'
     )
     image = models.ImageField(
-        'Изображение',
-        upload_to='landing/project_images'
+        'Изображение', upload_to='landing/project_images'
     )
     preview_image = models.ImageField(
-        'Превью изображения',
-        blank=True,
-        null=True,
-        height_field='86'
+        'Превью изображения', blank=True, null=True, height_field='86'
     )
 
     class Meta:
         verbose_name = 'Изображение проекта'
         verbose_name_plural = 'Изображения проекта'
         ordering = ('project', 'image')
+
+
+class VolumetricModel(models.Model):
+    low = models.FileField(
+        'Файл низкого разрешения', upload_to='landing/volumetric_models_low'
+    )
+    high = models.FileField(
+        'Файл высокого разрешения', upload_to='landing/volumetric_models_high'
+    )
+
+    class Meta:
+        verbose_name = '3D Модель'
+        verbose_name_plural = '3D Модели'
+
 
 # TODO Дописать модель для Респондента
 # TODO Дописать модель для формы заказа
