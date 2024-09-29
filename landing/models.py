@@ -137,6 +137,9 @@ class ProjectImage(models.Model):
         verbose_name_plural = 'Изображения проекта'
         ordering = ('project', 'image')
 
+    def __str__(self):
+        return self.project.title
+
 
 class VolumetricModel(models.Model):
     low = models.FileField(
@@ -150,7 +153,33 @@ class VolumetricModel(models.Model):
         verbose_name = '3D Модель'
         verbose_name_plural = '3D Модели'
 
+    def __str__(self):
+        return self.high.name
 
-# TODO Дописать модель для Респондента
-# TODO Дописать модель для формы заказа
-# TODO Дописать модель для Рода деятельности респондента
+
+class ActivityType(models.Model):
+    name = models.CharField('Название', max_length=50)
+
+    class Meta:
+        verbose_name = 'Тип деятельности'
+        verbose_name_plural = 'Типы деятельности'
+        ordering = ('name',)
+
+    def __str__(self):
+        return self.name
+
+
+class Respondent(models.Model):
+    email = models.EmailField('E-mail', max_length=254, unique=True)
+    country = models.CharField('Страна', max_length=50)
+    activity_type = models.ForeignKey(ActivityType, on_delete=models.CASCADE)
+    organization = models.CharField('Организация', max_length=50)
+    organization_website = models.URLField('Сайт', blank=True, null=True)
+
+    class Meta:
+        verbose_name = 'Респондент'
+        verbose_name_plural = 'Респонденты'
+        ordering = ('organization',)
+
+    def __str__(self):
+        return self.organization
