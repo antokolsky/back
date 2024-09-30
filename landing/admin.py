@@ -4,7 +4,7 @@ from landing.models import (
     ActivityType,
     Respondent,
     VolumetricModel,
-    Project,
+    LandingProject,
     ProjectImage,
 )
 
@@ -24,11 +24,10 @@ class RespondentAdmin(admin.ModelAdmin):
     list_display = (
         'email',
         'country',
-        'activity_type',
         'organization',
         'organization_website',
     )
-    list_filter = ('activity_type', 'country')
+    list_filter = ('country',)
 
 
 @admin.register(VolumetricModel)
@@ -36,7 +35,7 @@ class VolumetricModelAdmin(admin.ModelAdmin):
     list_display = ('low', 'high')
 
 
-@admin.register(Project)
+@admin.register(LandingProject)
 class ProjectAdmin(admin.ModelAdmin):
     list_display = (
         'author_name',

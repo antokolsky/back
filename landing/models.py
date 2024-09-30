@@ -1,9 +1,9 @@
-from django.db import models
 from django.core.validators import (
-    MinLengthValidator,
     MaxLengthValidator,
+    MinLengthValidator,
     MinValueValidator,
 )
+from django.db import models
 
 AUTHOR_NAME_VERBOSE = 'Имя автора'
 AUTHOR_NAME_LENGTH_VALIDATION_MAX = 200
@@ -36,7 +36,7 @@ COST_MAX = 100000
 RATING_DEFAULT = 0
 
 
-class Project(models.Model):
+class LandingProject(models.Model):
     author_name = models.CharField(
         AUTHOR_NAME_VERBOSE,
         max_length=AUTHOR_NAME_LENGTH_VALIDATION_MAX,
@@ -82,7 +82,7 @@ class Project(models.Model):
                     DIMENSION_HEIGHT_NAME, DIMENSION_MIN_VALUE
                 ),
             )
-        ]
+        ],
     )
     dimension_width = models.PositiveSmallIntegerField(
         DIMENSION_WIDTH_NAME,
@@ -93,7 +93,7 @@ class Project(models.Model):
                     DIMENSION_WIDTH_NAME, DIMENSION_MIN_VALUE
                 ),
             )
-        ]
+        ],
     )
     dimension_depth = models.PositiveSmallIntegerField(
         DIMENSION_DEPTH_NAME,
@@ -104,7 +104,7 @@ class Project(models.Model):
                     DIMENSION_DEPTH_NAME, DIMENSION_MIN_VALUE
                 ),
             )
-        ]
+        ],
     )
     cost = models.PositiveIntegerField('Стоимость')
     rating = models.IntegerField('Рейтинг', default=RATING_DEFAULT)
@@ -120,13 +120,13 @@ class Project(models.Model):
 
 class ProjectImage(models.Model):
     project = models.ForeignKey(
-        Project, on_delete=models.CASCADE, related_name='project_images'
+        LandingProject, on_delete=models.CASCADE, related_name='project_images'
     )
     image = models.ImageField(
         'Изображение', upload_to='landing/project_images'
     )
     preview_image = models.ImageField(
-        'Превью изображения', blank=True, null=True, height_field='86'
+        'Превью изображения', blank=True, null=True
     )
 
     class Meta:

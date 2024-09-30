@@ -1,20 +1,15 @@
 from django.urls import include, path
 from rest_framework.routers import DefaultRouter
 from rest_framework_simplejwt.views import (
-    TokenRefreshView,
-    TokenObtainPairView,
-    TokenVerifyView,
+    TokenObtainPairView, TokenRefreshView, TokenVerifyView
 )
 
-from api.views import (
-    CustomUserRussianViewSet,
-    CountryViewSet,
-    CustomUserEnglishViewSet,
-    StaticPagesViewSet,
-    ProjectViewSet,
-    RandomProjectsOnMainPageViewSet,
-    RandomUsersOnMainPageViewSet,
-    IndexPageViewSet,
+from api.views import (CountryViewSet, CustomUserEnglishViewSet,
+                       CustomUserRussianViewSet, IndexPageViewSet,
+                       ProjectViewSet, RandomProjectsOnMainPageViewSet,
+                       RandomUsersOnMainPageViewSet, StaticPagesViewSet)
+from landing.views import (
+    ActivityTypeViewSet, RespondentViewSet, LandingProjectViewSet
 )
 
 router_eng = DefaultRouter()
@@ -39,6 +34,15 @@ router_ru.register(
     basename='random_authors_on_main_page',
 )
 
+router_landing = DefaultRouter()
+router_landing.register(
+    'activity_types', ActivityTypeViewSet, basename='activity_types'
+)
+router_landing.register(
+    'respondents', RespondentViewSet, basename='respondents'
+)
+router_landing.register('projects', LandingProjectViewSet, basename='_projects')
+
 urlpatterns = [
     path(
         "auth/get_token/",
@@ -49,4 +53,5 @@ urlpatterns = [
     path("auth/verify/", TokenVerifyView.as_view(), name="token_verify"),
     path("english/", include(router_eng.urls)),
     path("russian/", include(router_ru.urls)),
+    path('landing/', include(router_landing.urls)),
 ]
