@@ -4,6 +4,7 @@ from django.core.validators import (
     MinValueValidator,
 )
 from django.db import models
+from PIL import Image
 
 AUTHOR_NAME_VERBOSE = 'Имя автора'
 AUTHOR_NAME_LENGTH_VALIDATION_MAX = 200
@@ -120,7 +121,9 @@ class LandingProject(models.Model):
 
 class ProjectImage(models.Model):
     project = models.ForeignKey(
-        LandingProject, on_delete=models.CASCADE, related_name='project_images'
+        LandingProject,
+        on_delete=models.CASCADE,
+        related_name='project_images',
     )
     image = models.ImageField(
         'Изображение', upload_to='landing/project_images'
@@ -136,6 +139,15 @@ class ProjectImage(models.Model):
 
     def __str__(self):
         return self.project.title
+
+    def save(self, *args, **kwargs):
+        super(ProjectImage, self).save(*args, **kwargs)
+        img = Image.open(self.preview_image.path)
+        max_size = (78, 86)
+        if img.size[0] > max_size[0] or img.size[1] > max_size[1]:
+            img.thumbnail(size=max_size)
+            img.convert('RGB')
+            img.save(self.preview_image.path)
 
 
 class VolumetricModel(models.Model):
