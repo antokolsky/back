@@ -1,6 +1,15 @@
-from rest_framework.serializers import ModelSerializer, PrimaryKeyRelatedField
+from rest_framework.serializers import (
+    ModelSerializer,
+    PrimaryKeyRelatedField,
+    SerializerMethodField,
+)
 
-from landing.models import ActivityType, Respondent, LandingProject
+from landing.models import (
+    ActivityType,
+    Respondent,
+    LandingProject,
+    ProjectImage,
+)
 
 
 class ActivityTypeSerializer(ModelSerializer):
@@ -26,7 +35,29 @@ class RespondentWriteSerializer(ModelSerializer):
         fields = '__all__'
 
 
+class ProjectImageSerializer(ModelSerializer):
+    class Meta:
+        model = ProjectImage
+        fields = '__all__'
+
+
 class LandingProjectSerializer(ModelSerializer):
+    images = SerializerMethodField()
+
+    def get_images(self, obj):
+        return ProjectImageSerializer(
+            ProjectImage.objects.filter(project_id=obj.id), many=True
+        ).data
+
     class Meta:
         model = LandingProject
-        fields = '__all__'
+        fields = (
+            'author_name',
+            'title',
+            'dimension_height',
+            'dimension_width',
+            'dimension_depth',
+            'cost',
+            'rating',
+            'images',
+        )
