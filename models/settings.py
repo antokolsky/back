@@ -14,6 +14,7 @@ SECRET_KEY = os.getenv("SECRET_KEY", "No_key")
 DEBUG = config("DEBUG", default=True, cast=bool)
 
 ALLOWED_HOSTS = ["*"]
+CORS_ALLOWED_ORIGINS = ["*"]
 CSRF_TRUSTED_ORIGINS = ["http://antokolsky.ddns.net"]
 SECURE_CROSS_ORIGIN_OPENER_POLICY = None
 INSTALLED_APPS = [
@@ -27,6 +28,7 @@ INSTALLED_APPS = [
     "rest_framework.authtoken",
     "rest_framework_simplejwt",
     "drf_yasg",
+    "corsheaders",
     "djoser",
     "users",
     "projects",
@@ -50,6 +52,7 @@ REST_FRAMEWORK = {
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
@@ -163,6 +166,6 @@ SIMPLE_JWT = {
     "ROTATE_REFRESH_TOKENS": True,
     "UPDATE_LAST_LOGIN": True,
     "BLACKLIST_AFTER_ROTATION": True,
-    "ACCESSS_TOKEN_LIFETIME": timedelta(days=30),
+    "ACCESS_TOKEN_LIFETIME": timedelta(days=30),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
 }
