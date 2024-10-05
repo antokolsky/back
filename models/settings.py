@@ -14,7 +14,7 @@ SECRET_KEY = os.getenv("SECRET_KEY", "No_key")
 DEBUG = config("DEBUG", default=True, cast=bool)
 
 ALLOWED_HOSTS = ["*"]
-CORS_ALLOWED_ORIGINS = ["http://*"]
+CORS_ALLOW_ALL_ORIGINS = True
 CSRF_TRUSTED_ORIGINS = ["http://antokolsky.ddns.net"]
 SECURE_CROSS_ORIGIN_OPENER_POLICY = None
 INSTALLED_APPS = [
