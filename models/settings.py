@@ -18,6 +18,7 @@ CORS_ALLOW_ALL_ORIGINS = True
 CSRF_TRUSTED_ORIGINS = ["http://antokolsky.ddns.net"]
 SECURE_CROSS_ORIGIN_OPENER_POLICY = None
 INSTALLED_APPS = [
+    "corsheaders",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -28,7 +29,6 @@ INSTALLED_APPS = [
     "rest_framework.authtoken",
     "rest_framework_simplejwt",
     "drf_yasg",
-    "corsheaders",
     "djoser",
     "users",
     "projects",
