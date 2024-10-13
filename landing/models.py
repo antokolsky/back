@@ -126,10 +126,13 @@ class ProjectImage(models.Model):
         related_name='project_images',
     )
     image = models.ImageField(
-        'Изображение', upload_to='landing/project_images'
+        'Изображение', upload_to='landing/project_images/'
     )
     preview_image = models.ImageField(
-        'Превью изображения', blank=True, null=True
+        'Превью изображения',
+        blank=True,
+        null=True,
+        upload_to=('landing/project_images/previews/'),
     )
 
     class Meta:
@@ -146,7 +149,7 @@ class ProjectImage(models.Model):
         max_size = (78, 86)
         if img.size[0] > max_size[0] or img.size[1] > max_size[1]:
             img.thumbnail(size=max_size)
-            img.convert('RGB')
+            img = img.convert('RGB')
             img.save(self.preview_image.path)
 
 
