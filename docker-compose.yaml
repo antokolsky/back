@@ -26,6 +26,7 @@ services:
     volumes:
       - static_backend:/static_files
       - landing_media:/app/media
+      - db_backend:/app/database
 
   frontend:
     container_name: frontend_container
@@ -60,5 +61,6 @@ services:
 volumes:
   postgres_data:
   static_backend:
+  db_backend:
   landing_static:
   landing_media:
