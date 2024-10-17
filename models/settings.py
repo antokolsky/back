@@ -14,16 +14,11 @@ SECRET_KEY = os.getenv("SECRET_KEY", "No_key")
 DEBUG = config("DEBUG", default=True, cast=bool)
 
 ALLOWED_HOSTS = ["*"]
-# CSRF_TRUSTED_ORIGINS = ["*"]
-# SECURE_CROSS_ORIGIN_OPENER_POLICY = None
-CORS_ORIGIN_WHITELIST = [
-    "http://antokolsky.ddns.net",
-    "http://*",
-    "http://127.0.0.1:8000",
-]
 CORS_ALLOW_ALL_ORIGINS = True
-
+CSRF_TRUSTED_ORIGINS = ["http://antokolsky.ddns.net"]
+SECURE_CROSS_ORIGIN_OPENER_POLICY = None
 INSTALLED_APPS = [
+    "corsheaders",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -39,7 +34,7 @@ INSTALLED_APPS = [
     "projects",
     "api.apps.ApiConfig",
     "static_pages.apps.StaticPagesConfig",
-    "corsheaders",
+    "landing.apps.LandingConfig",
 ]
 
 AUTH_USER_MODEL = "users.User"
@@ -58,6 +53,7 @@ MIDDLEWARE = [
     "corsheaders.middleware.CorsMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
@@ -100,7 +96,7 @@ WSGI_APPLICATION = "models.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        "NAME": BASE_DIR / "database/db.sqlite3",
     }
 }
 
@@ -171,6 +167,6 @@ SIMPLE_JWT = {
     "ROTATE_REFRESH_TOKENS": True,
     "UPDATE_LAST_LOGIN": True,
     "BLACKLIST_AFTER_ROTATION": True,
-    "ACCESSS_TOKEN_LIFETIME": timedelta(days=30),
+    "ACCESS_TOKEN_LIFETIME": timedelta(days=30),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
 }

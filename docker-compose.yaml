@@ -14,7 +14,7 @@ services:
       start_period: 5s
     env_file:
       - ./.env
-  
+
   backend:
     container_name: backend_container
     image: databorodata/antokolsky_backend:latest
@@ -25,26 +25,42 @@ services:
       - ./.env
     volumes:
       - static_backend:/static_files
-  
+      - landing_media:/app/media
+      - db_backend:/app/database
+
   frontend:
     container_name: frontend_container
     image: databorodata/antokolsky_front:latest
     command: cp -r /app/build/. /frontend_static/
     volumes:
       - static_backend:/frontend_static
+  
+  landing:
+    container_name: landing_container
+    image: databorodata/antokolsky_landing:latest
+    command: cp -r /app/dist/. /landing_static/
+    volumes:
+      - landing_static:/landing_static
 
   nginx:
     image: nginx:latest
     ports:
       - 8000:8000
+      - 8001:8001
     volumes:
       - ./nginx.conf:/etc/nginx/conf.d/default.conf
       - static_backend:/static_files
+      - landing_static:/landing_static
+      - landing_media:/landing_media
     depends_on:
       - frontend
       - backend
       - postgres
+      - landing
 
 volumes:
   postgres_data:
   static_backend:
+  db_backend:
+  landing_static:
+  landing_media:
