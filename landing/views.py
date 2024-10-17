@@ -1,12 +1,16 @@
+from django.shortcuts import get_object_or_404
+from rest_framework import status
+from rest_framework.decorators import action
 from rest_framework.permissions import SAFE_METHODS
+from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
 
-from landing.models import ActivityType, Respondent, LandingProject
+from landing.models import ActivityType, LandingProject, Respondent
 from landing.serializers import (
     ActivityTypeSerializer,
+    LandingProjectSerializer,
     RespondentReadSerializer,
     RespondentWriteSerializer,
-    LandingProjectSerializer,
 )
 
 
@@ -33,3 +37,19 @@ class LandingProjectViewSet(ReadOnlyModelViewSet):
 
     queryset = LandingProject.objects.all()
     serializer_class = LandingProjectSerializer
+
+    @action(methods=('POST',), detail=True)
+    def vote(self, request, pk):
+        """
+        Метод для голосования.
+        В зависимости от параметра action увеличивает или уменьшает рейтинг
+        проекта.
+        Если action=unvote, то уменьшает рейтинг проекта.
+        """
+        project = get_object_or_404(LandingProject, id=pk)
+        if self.request.GET.get('action', False) == 'unvote':
+            project.rating -= 1
+        else:
+            project.rating += 1
+        project.save()
+        return Response({'status': 'Updated'}, status=status.HTTP_200_OK)
