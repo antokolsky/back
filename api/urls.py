@@ -1,15 +1,26 @@
 from django.urls import include, path
 from rest_framework.routers import DefaultRouter
 from rest_framework_simplejwt.views import (
-    TokenObtainPairView, TokenRefreshView, TokenVerifyView
+    TokenObtainPairView,
+    TokenRefreshView,
+    TokenVerifyView,
 )
 
-from api.views import (CountryViewSet, CustomUserEnglishViewSet,
-                       CustomUserRussianViewSet, IndexPageViewSet,
-                       ProjectViewSet, RandomProjectsOnMainPageViewSet,
-                       RandomUsersOnMainPageViewSet, StaticPagesViewSet)
+from api.views import (
+    CountryViewSet,
+    CustomUserEnglishViewSet,
+    CustomUserRussianViewSet,
+    IndexPageViewSet,
+    ProjectViewSet,
+    RandomProjectsOnMainPageViewSet,
+    RandomUsersOnMainPageViewSet,
+    StaticPagesViewSet,
+)
 from landing.views import (
-    ActivityTypeViewSet, RespondentViewSet, LandingProjectViewSet
+    ActivityTypeViewSet,
+    RespondentViewSet,
+    LandingProjectViewSet,
+    SculptureOrderViewSet,
 )
 
 router_eng = DefaultRouter()
@@ -41,7 +52,12 @@ router_landing.register(
 router_landing.register(
     'respondents', RespondentViewSet, basename='respondents'
 )
-router_landing.register('projects', LandingProjectViewSet, basename='_projects')
+router_landing.register(
+    'projects', LandingProjectViewSet, basename='_projects'
+)
+router_landing.register(
+    'sculpture_order', SculptureOrderViewSet, basename='sculpture_order'
+)
 
 urlpatterns = [
     path(

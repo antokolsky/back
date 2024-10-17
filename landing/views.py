@@ -5,12 +5,18 @@ from rest_framework.permissions import SAFE_METHODS
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
 
-from landing.models import ActivityType, LandingProject, Respondent
+from landing.models import (
+    ActivityType,
+    LandingProject,
+    Respondent,
+    SculptureOrder
+)
 from landing.serializers import (
     ActivityTypeSerializer,
     LandingProjectSerializer,
     RespondentReadSerializer,
     RespondentWriteSerializer,
+    SculptureOrderSerializer
 )
 
 
@@ -53,3 +59,12 @@ class LandingProjectViewSet(ReadOnlyModelViewSet):
             project.rating += 1
         project.save()
         return Response({'status': 'Updated'}, status=status.HTTP_200_OK)
+
+
+class SculptureOrderViewSet(ModelViewSet):
+    """
+    Метод для создания заказов скульптур.
+    """
+    queryset = SculptureOrder.objects.all()
+    http_method_names = ('post', 'get')
+    serializer_class = SculptureOrderSerializer
