@@ -1,7 +1,7 @@
 from rest_framework.serializers import (
     ModelSerializer,
     PrimaryKeyRelatedField,
-    SerializerMethodField
+    SerializerMethodField,
 )
 
 from landing.models import (
@@ -30,7 +30,6 @@ class RespondentReadSerializer(ModelSerializer):
 
 
 class RespondentWriteSerializer(ModelSerializer):
-
     class Meta:
         model = Respondent
         fields = '__all__'

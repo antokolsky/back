@@ -6,6 +6,8 @@ from django.core.validators import (
 from django.db import models
 from PIL import Image
 
+from users.models import Country
+
 AUTHOR_NAME_VERBOSE = 'Имя автора'
 AUTHOR_NAME_LENGTH_VALIDATION_MAX, SCULPTURE_NAME_MAX = (200,) * 2
 AUTHOR_NAME_LENGTH_VALIDATION_MIN = 1
@@ -183,7 +185,12 @@ class ActivityType(models.Model):
 
 class Respondent(models.Model):
     email = models.EmailField('E-mail', max_length=254, unique=True)
-    country = models.CharField('Страна', max_length=50)
+    country = models.ForeignKey(
+        Country,
+        on_delete=models.CASCADE,
+        related_name='respondents',
+        verbose_name='Страна',
+    )
     activity_type = models.ForeignKey(ActivityType, on_delete=models.CASCADE)
     organization = models.CharField('Организация', max_length=50)
     organization_website = models.URLField('Сайт', blank=True, null=True)
