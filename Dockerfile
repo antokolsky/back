@@ -7,5 +7,6 @@ RUN python manage.py collectstatic --no-input
 RUN mkdir -p /static_files/static/
 RUN mkdir -p /app/database/
 RUN python manage.py migrate --no-input
+RUN python manage.py import_countries
 RUN cp -ar /app/static_files/. /static_files/static/
 CMD [ "gunicorn", "--bind", "0:8000", "models.wsgi" ]

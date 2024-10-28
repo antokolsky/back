@@ -6,6 +6,7 @@ from landing.models import (
     VolumetricModel,
     LandingProject,
     ProjectImage,
+    SculptureOrder
 )
 
 
@@ -47,3 +48,8 @@ class ProjectAdmin(admin.ModelAdmin):
         'rating',
     )
     inlines = [ProjectGalleryInline]
+
+
+@admin.register(SculptureOrder)
+class SculptureOrderAdmin(admin.ModelAdmin):
+    list_display = ('create_date', 'sculpture_name', 'email', 'phone')

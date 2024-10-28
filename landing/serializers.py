@@ -6,9 +6,10 @@ from rest_framework.serializers import (
 
 from landing.models import (
     ActivityType,
-    Respondent,
     LandingProject,
     ProjectImage,
+    Respondent,
+    SculptureOrder
 )
 
 
@@ -29,7 +30,6 @@ class RespondentReadSerializer(ModelSerializer):
 
 
 class RespondentWriteSerializer(ModelSerializer):
-
     class Meta:
         model = Respondent
         fields = '__all__'
@@ -61,3 +61,9 @@ class LandingProjectSerializer(ModelSerializer):
             'rating',
             'images',
         )
+
+
+class SculptureOrderSerializer(ModelSerializer):
+    class Meta:
+        model = SculptureOrder
+        fields = '__all__'

@@ -6,8 +6,10 @@ from django.core.validators import (
 from django.db import models
 from PIL import Image
 
+from users.models import Country
+
 AUTHOR_NAME_VERBOSE = 'Имя автора'
-AUTHOR_NAME_LENGTH_VALIDATION_MAX = 200
+AUTHOR_NAME_LENGTH_VALIDATION_MAX, SCULPTURE_NAME_MAX = (200,) * 2
 AUTHOR_NAME_LENGTH_VALIDATION_MIN = 1
 AUTHOR_NAME_LENGTH_VALIDATION_MIN_MESSAGE = (
     'Имя автора должно быть длинее {} символа'
@@ -183,7 +185,12 @@ class ActivityType(models.Model):
 
 class Respondent(models.Model):
     email = models.EmailField('E-mail', max_length=254, unique=True)
-    country = models.CharField('Страна', max_length=50)
+    country = models.ForeignKey(
+        Country,
+        on_delete=models.CASCADE,
+        related_name='respondents',
+        verbose_name='Страна',
+    )
     activity_type = models.ForeignKey(ActivityType, on_delete=models.CASCADE)
     organization = models.CharField('Организация', max_length=50)
     organization_website = models.URLField('Сайт', blank=True, null=True)
@@ -195,3 +202,20 @@ class Respondent(models.Model):
 
     def __str__(self):
         return self.organization
+
+
+class SculptureOrder(models.Model):
+    sculpture_name = models.CharField(
+        'Название скульптуры', max_length=SCULPTURE_NAME_MAX
+    )
+    email = models.EmailField('E-mail', max_length=254)
+    phone = models.CharField('Телефон', max_length=50, blank=True)
+    create_date = models.DateField('Дата создания', auto_now_add=True)
+
+    class Meta:
+        verbose_name = 'Заказ скульптуры'
+        verbose_name_plural = 'Заказы скульптур'
+        ordering = ('create_date',)
+
+    def __str__(self):
+        return self.sculpture_name
