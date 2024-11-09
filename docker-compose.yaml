@@ -51,7 +51,7 @@ services:
       - ./nginx.conf:/etc/nginx/conf.d/default.conf
       - static_backend:/static_files
       - landing_static:/landing_static
-      - landing_media:/landing_media
+      - landing_media:/landing_static/photo/media
     depends_on:
       - frontend
       - backend
