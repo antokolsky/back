@@ -15,7 +15,7 @@ DEBUG = config("DEBUG", default=True, cast=bool)
 
 ALLOWED_HOSTS = ["*"]
 CORS_ALLOW_ALL_ORIGINS = True
-CSRF_TRUSTED_ORIGINS = ["http://antokolsky.ddns.net", "http://127.0.0.1"]
+CSRF_TRUSTED_ORIGINS = ["http://antokolsky.ddns.net", "http://127.0.0.1:8000"]
 SECURE_CROSS_ORIGIN_OPENER_POLICY = None
 INSTALLED_APPS = [
     "corsheaders",
