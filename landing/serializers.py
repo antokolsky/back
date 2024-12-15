@@ -9,7 +9,7 @@ from landing.models import (
     LandingProject,
     ProjectImage,
     Respondent,
-    SculptureOrder
+    SculptureOrder,
 )
 
 
@@ -52,6 +52,7 @@ class LandingProjectSerializer(ModelSerializer):
     class Meta:
         model = LandingProject
         fields = (
+            'id',
             'author_name',
             'title',
             'dimension_height',
